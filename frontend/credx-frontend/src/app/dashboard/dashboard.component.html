@@ -1,0 +1,115 @@
+<section class="dashboard-shell">
+  <header class="hero">
+    <div>
+      <p class="eyebrow">PS1 Job Matching Dashboard</p>
+      <h1>Find the roles that fit your profile best.</h1>
+      <p class="hero-copy">Create a profile, compare your skills against live listings, and see why each opportunity is ranked highly.</p>
+    </div>
+    <div class="hero-card">
+      <h2>How it works</h2>
+      <ul>
+        <li>Skills and GPA feed the scoring model.</li>
+        <li>Work authorization and sponsorship status are treated as compatibility checks.</li>
+        <li>Listings are sorted by match score so the strongest recommendations appear first.</li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="layout-grid">
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="panel profile-panel">
+      <h2>Student profile</h2>
+      <label>
+        Name
+        <input formControlName="name" placeholder="Ava Chen" />
+      </label>
+      <label>
+        Email
+        <input formControlName="email" placeholder="ava@example.com" />
+      </label>
+
+      <div class="field-group">
+        <span class="field-label">Skills</span>
+        <div class="chip-list">
+          <button type="button" *ngFor="let skill of skillOptions" class="chip" [class.active]="getSelectedSkill(skill)" (click)="toggleSkill(skill)">
+            {{ skill }}
+          </button>
+        </div>
+      </div>
+
+      <label>
+        GPA
+        <input type="number" formControlName="gpa" min="0" max="4" step="0.1" />
+      </label>
+
+      <label>
+        Work authorization
+        <select formControlName="workAuthorization">
+          <option *ngFor="let option of workAuthorizationOptions" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+
+      <label class="checkbox-row">
+        <input type="checkbox" formControlName="sponsorshipNeeded" />
+        I will need visa sponsorship
+      </label>
+
+      <button type="submit" class="primary-btn">Generate recommendations</button>
+    </form>
+
+    <section class="panel results-panel">
+      <div class="results-header">
+        <div>
+          <h2>Recommended opportunities</h2>
+          <p>Ranked by explainable match score.</p>
+        </div>
+        <div class="filters">
+          <input placeholder="Role" [(ngModel)]="filters.role" (ngModelChange)="applyFilters()" name="role" />
+          <input placeholder="Location" [(ngModel)]="filters.location" (ngModelChange)="applyFilters()" name="location" />
+          <select [(ngModel)]="filters.workMode" (change)="applyFilters()" name="workMode">
+            <option value="">Any mode</option>
+            <option *ngFor="let mode of workModes" [value]="mode">{{ mode }}</option>
+          </select>
+          <select [(ngModel)]="filters.sponsorship" (change)="applyFilters()" name="sponsorship">
+            <option value="">Any sponsorship</option>
+            <option value="required">Requires sponsorship</option>
+            <option value="not-required">No sponsorship</option>
+          </select>
+        </div>
+      </div>
+
+      <div *ngIf="!selectedProfile" class="empty-state">
+        Submit your profile to see recommendations.
+      </div>
+
+      <div *ngIf="selectedProfile" class="listing-list">
+        <article *ngFor="let listing of filteredListings" class="listing-card">
+          <div class="listing-top">
+            <div>
+              <h3>{{ listing.title }}</h3>
+              <p>{{ listing.company }} • {{ listing.location }}</p>
+            </div>
+            <div class="score-pill">
+              <strong>{{ getMatchScore(listing) }}%</strong>
+              <span>match</span>
+            </div>
+          </div>
+          <p class="description">{{ listing.description }}</p>
+          <div class="meta-row">
+            <span>{{ listing.workMode }}</span>
+            <span>{{ listing.sponsorshipRequired ? 'Sponsorship required' : 'No sponsorship required' }}</span>
+            <span>GPA ≥ {{ listing.gpaThreshold }}</span>
+          </div>
+          <div class="skill-row">
+            <span *ngFor="let skill of listing.requiredSkills">{{ skill }}</span>
+          </div>
+          <div class="explanation">
+            <h4>Why it matched</h4>
+            <ul>
+              <li *ngFor="let reason of getMatchSummary(listing)">{{ reason }}</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+</section>
