@@ -1,59 +1,9 @@
-# CredxFrontend
+# CredX PS1 Matching Dashboard
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.7.
+This project is a student-focused job matching dashboard built with Angular for the frontend and a local rule-based matching approach for the recommendation logic. The experience allows students to enter a profile with their skills, GPA, work authorization status, and sponsorship needs, then view ranked job opportunities with clear explanations of why each listing matched. The interface also includes filters for role, location, work mode, and sponsorship requirement so students can narrow the results quickly.
 
-## Development server
+The implementation was created using Angular, TypeScript, Reactive Forms, and Vitest. The matching logic is fully local and explainable, with no external APIs or LLM services involved. The dashboard is designed as a clean demo of how a matching platform could work for PS1-style recruitment use cases.
 
-To start a local development server, run:
+To run the application locally, navigate to the frontend project folder and install dependencies with npm install. Then start the app with npm start, which launches the development server at http://localhost:4200/. To build the project, use npm run build. To run the automated tests, use npx vitest run.
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The main application logic is organized around the dashboard component, the match scoring service, and the local jobs service, which together provide the profile form, filter controls, ranked listings, and explanation panel seen in the UI.
